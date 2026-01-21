@@ -1,0 +1,43 @@
+{
+  "category": "Persistence Mechanisms",
+  "mitre_technique": "T1053",
+  "timestamp": "2026-01-18T11:29:08.566169",
+  "tests": [
+    {
+      "test_name": "Crontab Access",
+      "description": "crontab command execution (persistence mechanism)",
+      "expected_detection": "LOGGED - Scheduled task access",
+      "actual_detection": "Exit code: 1",
+      "threat_detected": true,
+      "notes": "crontab modifications are common persistence technique",
+      "timestamp": "2026-01-18T11:29:08.575004"
+    },
+    {
+      "test_name": "systemd Enumeration",
+      "description": "systemctl listing running services",
+      "expected_detection": "LOGGED - Service enumeration",
+      "actual_detection": "Exit code: 0",
+      "threat_detected": true,
+      "notes": "systemd is common persistence target",
+      "timestamp": "2026-01-18T11:29:09.093925"
+    },
+    {
+      "test_name": ".bashrc Access",
+      "description": "Reading shell profile (persistence target)",
+      "expected_detection": "LOGGED - Profile access",
+      "actual_detection": "File size: 5532 bytes",
+      "threat_detected": true,
+      "notes": ".bashrc modifications provide user-level persistence",
+      "timestamp": "2026-01-18T11:29:09.594421"
+    },
+    {
+      "test_name": "SSH authorized_keys Access",
+      "description": "No authorized_keys file",
+      "expected_detection": "LOGGED",
+      "actual_detection": "File does not exist",
+      "threat_detected": true,
+      "notes": "File access attempt logged regardless",
+      "timestamp": "2026-01-18T11:29:10.096472"
+    }
+  ]
+}

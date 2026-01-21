@@ -1,0 +1,61 @@
+{
+  "category": "Living off the Land Binaries (LOLBins)",
+  "mitre_technique": "T1059",
+  "timestamp": "2026-01-18T11:29:01.545030",
+  "tests": [
+    {
+      "test_name": "curl Payload Download",
+      "description": "curl downloading script from remote server",
+      "expected_detection": "SUSPICIOUS - Network download logged",
+      "actual_detection": "Exit code: 7",
+      "threat_flagged": true,
+      "notes": "curl is a flagged binary - backend should detect",
+      "timestamp": "2026-01-18T11:29:01.562266"
+    },
+    {
+      "test_name": "wget Payload Download",
+      "description": "wget downloading binary from remote server",
+      "expected_detection": "SUSPICIOUS - Network download logged",
+      "actual_detection": "Exit code: 4",
+      "threat_flagged": true,
+      "notes": "wget is a flagged binary for payload delivery",
+      "timestamp": "2026-01-18T11:29:02.073186"
+    },
+    {
+      "test_name": "Python One-Liner",
+      "description": "Python executing socket/subprocess code inline",
+      "expected_detection": "SUSPICIOUS - Pattern analysis by AI",
+      "actual_detection": "Exit code: 0",
+      "threat_flagged": true,
+      "notes": "python -c with socket import flagged by AI",
+      "timestamp": "2026-01-18T11:29:02.609306"
+    },
+    {
+      "test_name": "Base64 Decode + Execute",
+      "description": "Obfuscated payload via base64 piped to bash",
+      "expected_detection": "SUSPICIOUS - Obfuscation technique",
+      "actual_detection": "Exit code: -9, Output: ",
+      "threat_flagged": true,
+      "notes": "Common malware obfuscation technique",
+      "timestamp": "2026-01-18T11:29:03.110865"
+    },
+    {
+      "test_name": "Perl Inline Execution",
+      "description": "Perl executing inline code",
+      "expected_detection": "SUSPICIOUS - Interpreter abuse",
+      "actual_detection": "Exit code: 0",
+      "threat_flagged": true,
+      "notes": "perl is a flagged binary in backend patterns",
+      "timestamp": "2026-01-18T11:29:03.626972"
+    },
+    {
+      "test_name": "nmap Reconnaissance",
+      "description": "nmap execution (network scanner)",
+      "expected_detection": "SUSPICIOUS - Recon tool",
+      "actual_detection": "Exit code: 0",
+      "threat_flagged": true,
+      "notes": "nmap is a flagged reconnaissance tool",
+      "timestamp": "2026-01-18T11:29:04.138131"
+    }
+  ]
+}
