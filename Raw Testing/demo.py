@@ -293,6 +293,8 @@ def attack_6_lolbins():
         except Exception as e:
             print(f"    Error: {e}")
         print()
+        print("    \033[1;36mWaiting 5 seconds before next command...\033[0m")
+        time.sleep(5)
     
     print("\033[1;36m→ Check dashboard for SUSPICIOUS (Yellow) events with AI analysis\033[0m")
 
