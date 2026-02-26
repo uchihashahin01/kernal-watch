@@ -1,7 +1,7 @@
 # Kernel-Watch Threat Testing Report
 
-**Generated:** 2026-02-01T12:37:55.219026
-**System:** Linux kali 6.18.5+kali-amd64 #1 SMP PREEMPT_DYNAMIC Kali 6.18.5-1kali1 (2026-01-19) x86_64 GNU/Linux
+**Generated:** 2026-02-26T12:08:58.479759
+**System:** Linux kali 6.18.9+kali-amd64 #1 SMP PREEMPT_DYNAMIC Kali 6.18.9-1kali1 (2026-02-10) x86_64 GNU/Linux
 
 ---
 

@@ -169,12 +169,41 @@ sudo python3 run_all_tests.py
 
 | Category | Tests | Status |
 |----------|-------|--------|
-| Reverse Shell Attacks | 4 | ✅ Detected |
+| Reverse Shell Attacks | 4 | ✅ 2 Blocked, 2 Detected |
 | Fileless Malware | 4 | ✅ Detected |
-| LOLBins (Living off the Land) | 4 | ✅ Detected |
-| Renamed Binaries | 4 | ✅ Detected |
-| Privilege Escalation | 4 | ✅ Detected |
-| Persistence Mechanisms | 6 | ✅ Detected |
+| LOLBins (Living off the Land) | 6 | ✅ Detected |
+| Privilege Escalation | 5 | ✅ Detected |
+| Persistence Mechanisms | 4 | ✅ Detected |
+| Renamed Binaries (SHA-256) | 3 | ✅ Detected |
+
+---
+
+## 🎮 Interactive Demo
+
+An interactive menu-driven tool to demonstrate all attack scenarios one by one:
+
+```bash
+cd "Raw Testing"
+python3 demo.py
+```
+
+**What you'll see:**
+
+```
+╔══════════════════════════════════════════════════════════════╗
+║       KERNEL-WATCH THREAT SIMULATION DEMO                   ║
+╚══════════════════════════════════════════════════════════════╝
+
+  1. Reverse Shell Attack      - Web server spawning shell (BLOCKED)
+  2. Fileless Malware          - memfd_create syscall (DETECTED)
+  3. /tmp Execution            - Payload in /tmp (BLOCKED)
+  4. /dev/shm Execution        - RAM-based payload (BLOCKED)
+  5. Renamed Binary            - netcat disguised (DETECTED)
+  6. LOLBins                   - curl/wget/nmap abuse (DETECTED)
+  7. Node.js Injection         - Command injection (BLOCKED)
+```
+
+Each attack explains the scenario, executes the simulation, and points you to the dashboard for results.
 
 ---
 
@@ -221,7 +250,9 @@ kernel-watch/
 │   ├── run_all_tests.py
 │   └── scripts/           # Individual test scripts
 │
-├── Raw Testing/           # Manual attack simulation scripts
+├── Raw Testing/           # Attack simulation scripts
+│   └── demo.py            # Interactive demo menu
+│
 ├── SYSTEM_ARCHITECTURE.md # Full technical documentation
 └── project_paper.md       # Research paper & design notes
 ```

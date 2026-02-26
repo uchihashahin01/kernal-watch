@@ -97,27 +97,32 @@ flowchart TB
 ```
 kernel-watch/
 ├── backend/
-│   ├── server.js              # Main backend server with SQLite
+│   ├── server.js              # Main backend server with SQLite + Hash Detection
 │   ├── package.json           # Node.js dependencies
 │   ├── kernel-watch.sqlite    # SQLite database (auto-created)
 │   └── .env                   # API keys (GROQ_API_KEY)
 │
 ├── frontend/
-│   ├── src/
-│   │   ├── Dashboard.jsx      # Main SOC dashboard component
-│   │   ├── History.jsx        # Forensic history with pagination
-│   │   ├── WhitelistConfig.jsx # Dynamic whitelist management
-│   │   ├── WorldMap.jsx       # GeoIP visualization
-│   │   ├── index.css          # Cyberpunk theme styles
-│   │   ├── main.jsx           # React entry point
-│   │   └── App.jsx            # App wrapper
+│   └── src/
+│       ├── Dashboard.jsx      # Main SOC dashboard component
+│       ├── History.jsx        # Forensic history with pagination
+│       ├── WhitelistConfig.jsx # Dynamic whitelist management
+│       ├── WorldMap.jsx       # GeoIP visualization
+│       ├── index.css          # Cyberpunk theme styles
+│       ├── main.jsx           # React entry point
+│       └── App.jsx            # App wrapper
 │   ├── index.html             # HTML template
 │   └── vite.config.js         # Vite configuration
 │
+├── threat_tests/              # Automated test suite (26 tests)
+│   ├── run_all_tests.py       # Master test runner
+│   └── scripts/               # Individual test scripts
+│
+├── Raw Testing/               # Attack simulation scripts
+│   └── demo.py                # Interactive demo menu (7 attacks)
+│
 ├── monitor.c                  # eBPF C program (kernel probes)
 ├── watcher.py                 # Python eBPF agent
-├── test_memfd.py              # Fileless malware test
-├── test_lineage.py            # Reverse shell detection test
 ├── start_all.sh               # Launch script for all components
 └── SYSTEM_ARCHITECTURE.md     # This documentation
 ```
@@ -159,10 +164,12 @@ kernel-watch/
 **Key Features:**
 - SQLite persistence for forensic history
 - Dynamic whitelist management
+- SHA-256 binary hash detection (catches renamed malware)
 - AI analysis queue with rate limiting
 - Real-time WebSocket broadcasting
 - GeoIP enrichment for network events
 - RESTful API with pagination
+- Threat-level-aware whitelisting (critical events bypass whitelist)
 
 ---
 
@@ -338,6 +345,12 @@ let dynamicWhitelist = new Set(
 );
 
 function isWhitelisted(event) {
+    // CRITICAL: Never whitelist events that eBPF already marked as threats
+    // This ensures blocked processes (like reverse shells) still appear on dashboard
+    if (event.threat_level && event.threat_level >= 2) {
+        return false;
+    }
+
     // Check static whitelist (hardcoded common system processes)
     if (event.comm && STATIC_WHITELISTED_PROCESSES.includes(event.comm)) 
         return true;
@@ -470,6 +483,8 @@ app.post('/api/ingest', async (req, res) => {
 | Execution from /dev/shm | eBPF path check | SIGKILL |
 | Reverse shell (web→shell) | Process lineage | SIGKILL |
 | Fileless malware | memfd_create hook | Log/SIGKILL |
+| Renamed binaries | SHA-256 hash matching | CRITICAL flag |
+| Command injection (node→bash) | Process lineage | SIGKILL |
 | Suspicious binaries (nc, ncat) | Backend pattern | AI Analysis |
 | Network recon (nmap) | Backend pattern | AI Analysis |
 
@@ -521,5 +536,5 @@ app.post('/api/ingest', async (req, res) => {
 
 ---
 
-*Documentation Version: 3.0*  
-*Last Updated: January 2026*
+*Documentation Version: 3.1*  
+*Last Updated: February 2026*
